@@ -154,6 +154,7 @@ CREATE TABLE IF NOT EXISTS `visitant`
     primary key (visitant_id)
     );
 
+
 CREATE TABLE IF NOT EXISTS `reservation`
 (
     `reservation_id`      BIGINT       NOT NULL AUTO_INCREMENT,

@@ -1,10 +1,5 @@
 package com.byteforge.oauth.service;
 
-import com.byteforge.account.user.constant.UserType;
-import com.byteforge.account.user.domain.User;
-import com.byteforge.account.user.repository.LoginRepository;
-import com.byteforge.oauth.dto.UserSession;
-import com.byteforge.oauth.support.OAuthAttributes;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -17,6 +12,12 @@ import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.byteforge.account.user.constant.UserType;
+import com.byteforge.account.user.domain.User;
+import com.byteforge.account.user.repository.LoginRepository;
+import com.byteforge.oauth.dto.UserSession;
+import com.byteforge.oauth.support.OAuthAttributes;
 
 import java.time.LocalDate;
 import java.util.Collections;

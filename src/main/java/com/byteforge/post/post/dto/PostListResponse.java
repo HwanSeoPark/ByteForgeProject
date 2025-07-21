@@ -1,10 +1,9 @@
 package com.byteforge.post.post.dto;
 
-import java.util.Date;
-
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.querydsl.core.annotations.QueryProjection;
 import lombok.*;
+
+import java.util.Date;
 
 @Builder
 @Getter

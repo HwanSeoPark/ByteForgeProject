@@ -1,15 +1,15 @@
 package com.byteforge.admin.report.bug.repository;
 
+import com.byteforge.admin.report.bug.dto.BugReportResponse;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.byteforge.admin.report.bug.dto.BugReportResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 
+import java.util.List;
+
 import static com.byteforge.account.user.domain.QUser.user;
 import static com.byteforge.admin.report.bug.entity.QBugReport.bugReport;
-
-import java.util.List;
 
 @RequiredArgsConstructor
 public class BugReportRepositoryImpl implements CustomBugReportRepository {

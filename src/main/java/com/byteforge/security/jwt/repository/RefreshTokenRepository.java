@@ -1,18 +1,17 @@
 package com.byteforge.security.jwt.repository;
 
-import java.util.Optional;
-
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
+import java.util.Optional;
 
 import com.byteforge.security.jwt.domain.RefreshToken;
 
-public interface RefreshTokenRepository extends JpaRepository<RefreshToken, Long> {
-	   Optional<RefreshToken> findByToken(String token);
+public interface RefreshTokenRepository extends JpaRepository<RefreshToken,Long> {
 
-	   @Query(value = "SELECT p from RefreshToken p where p.keyEmail = :userEmail")
-	   Optional<RefreshToken> existsByKeyEmail(@Param("userEmail") String userEmail);
+    Optional<RefreshToken> findByToken(String Token);
 
-	   void deleteByKeyEmail(String userEmail);
+    void deleteByToken(String Token);
+
+    void deleteByKeyEmail(String keyEmail);          // 🔷 추가
+
+    boolean existsByKeyEmail(String keyEmail);
 }

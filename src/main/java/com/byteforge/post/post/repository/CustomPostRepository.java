@@ -1,13 +1,12 @@
 package com.byteforge.post.post.repository;
 
-import java.util.List;
-import java.util.Optional;
-
 import com.byteforge.account.user.domain.User;
+import com.byteforge.post.post.domain.Post;
+import com.byteforge.post.post.dto.PostListResponse;
 import org.springframework.data.domain.Pageable;
 
-import com.byteforge.post.post.dto.PostListResponse;
-import com.byteforge.post.post.domain.Post;
+import java.util.List;
+import java.util.Optional;
 
 public interface CustomPostRepository {
 	Optional<User> findRecommendationFromPost(Long postId, String userId);

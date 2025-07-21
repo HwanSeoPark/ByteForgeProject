@@ -1,8 +1,8 @@
 package com.byteforge.post.post.dto;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.byteforge.post.attachment.dto.AttachmentResponse;
 import com.byteforge.post.post.domain.Post;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;

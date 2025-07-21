@@ -1,3 +1,5 @@
+# application.yaml 무시
+src/main/resources/application.yaml
   
 # Java class files
 *.class
@@ -13,9 +15,7 @@
 *.iws
 .idea/
 
-#Build
 /build
-/bin
 
 .DS_Store/
 /target
