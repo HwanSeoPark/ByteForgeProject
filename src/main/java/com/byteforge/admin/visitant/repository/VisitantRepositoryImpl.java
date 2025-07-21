@@ -1,9 +1,9 @@
 package com.byteforge.admin.visitant.repository;
 
 import com.byteforge.admin.visitant.domain.QVisitant;
+import com.byteforge.admin.visitant.dto.VisitantResponse;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.byteforge.admin.visitant.dto.VisitantResponse;
 import lombok.RequiredArgsConstructor;
 
 import java.util.List;

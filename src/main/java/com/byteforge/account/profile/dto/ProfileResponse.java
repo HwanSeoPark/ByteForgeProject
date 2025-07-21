@@ -1,8 +1,8 @@
 package com.byteforge.account.profile.dto;
 
+import com.byteforge.account.profile.domain.Profile;
 import com.byteforge.account.user.domain.User;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.byteforge.account.profile.domain.Profile;
 import lombok.*;
 
 import java.time.LocalDate;

@@ -1,10 +1,10 @@
 package com.byteforge.admin.authority.service;
 
 import com.byteforge.account.user.domain.User;
+import com.byteforge.account.user.repository.LoginRepository;
 import com.byteforge.admin.authority.dto.AuthorityResponse;
 import com.byteforge.admin.authority.dto.ModifyRoleRequest;
 import com.byteforge.admin.authority.dto.SuspensionRequest;
-import com.byteforge.account.user.repository.LoginRepository;
 import com.byteforge.admin.authority.repository.AuthorityRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;

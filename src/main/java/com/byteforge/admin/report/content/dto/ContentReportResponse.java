@@ -1,7 +1,7 @@
 package com.byteforge.admin.report.content.dto;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.byteforge.admin.report.content.entity.ReportType;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 

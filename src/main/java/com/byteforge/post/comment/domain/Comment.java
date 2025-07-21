@@ -1,10 +1,10 @@
 package com.byteforge.post.comment.domain;
 
 import com.byteforge.account.user.domain.User;
-import com.byteforge.post.comment.dto.CommentRequest;
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.byteforge.common.config.BooleanConverter;
+import com.byteforge.post.comment.dto.CommentRequest;
 import com.byteforge.post.post.domain.Post;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
