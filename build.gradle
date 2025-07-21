@@ -65,6 +65,11 @@ dependencies {
     // SMTP
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-mail', version: '3.2.1'
 
+    // Youtube API
+    implementation 'com.google.api-client:google-api-client:2.5.0'
+    implementation 'com.google.http-client:google-http-client-jackson2:1.43.3'
+    implementation 'com.google.apis:google-api-services-youtube:v3-rev222-1.25.0'
+
 }
 
 tasks.named('test') {
