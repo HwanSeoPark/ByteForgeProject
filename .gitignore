@@ -1,4 +1,6 @@
-  
+src/main/resources/application.yml
+
+
 # Java class files
 *.class
 
