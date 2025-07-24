@@ -14,21 +14,24 @@ public class CookieSupport {
 
     // accessToken을 담는 ResponseCookie 생성
     public static ResponseCookie createAccessToken(String access) {
-        return ResponseCookie.from("accessToken", access)
-                .httpOnly(true)
-                .secure(true)
+        return ResponseCookie.from("accessToken" , access)
                 .path("/")
                 .maxAge(30 * 60 * 1000)
+                .secure(true)
+                .domain(DOMAIN_URL)
+                .httpOnly(true)
+                .sameSite("none")
                 .build();
     }
-
     // refreshToken을 담는 ResponseCookie 생성
     public static ResponseCookie createRefreshToken(String refresh) {
-        return ResponseCookie.from("refreshToken", refresh)
-                .httpOnly(true)
-                .secure(true)
+        return ResponseCookie.from("refreshToken" , refresh)
                 .path("/")
                 .maxAge(14 * 24 * 60 * 60 * 1000)
+                .secure(true)
+                .domain(DOMAIN_URL)
+                .httpOnly(true)
+                .sameSite("none")
                 .build();
     }
 
@@ -59,14 +62,14 @@ public class CookieSupport {
                 .httpOnly(true)
                 .secure(true)
                 .path("/")
-                .maxAge(30 * 60 * 1000)
+                .maxAge(0)
                 .build();
 
         ResponseCookie refreshDelete = ResponseCookie.from("refreshToken", null)
                 .httpOnly(true)
                 .secure(true)
                 .path("/")
-                .maxAge(14 * 24 * 60 * 60 * 1000)
+                .maxAge(0)
                 .build();
 
         response.addHeader("Set-Cookie", accessDelete.toString());

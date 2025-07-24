@@ -18,7 +18,7 @@ public class YoutubeSearchController {
     // Youtube API 원본
     @GetMapping
     public SearchVideosResponse searchVideos(@RequestParam("query") String query) {
-        return youtubeService.callSearchVideos(query);
+        return youtubeService.callSearchAPI(query);
     }
 
     // Custom DTO
