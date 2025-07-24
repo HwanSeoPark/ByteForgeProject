@@ -1,6 +1,6 @@
-package com.byteforge.lecture.dto.api;
+package com.byteforge.lecture.dto;
 
-import com.google.api.client.util.DateTime;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -10,7 +10,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class VideoDetailsResponse {
+public class VideosResponse {
     private List<VideoItem> items;
 
     @Data
@@ -23,14 +23,17 @@ public class VideoDetailsResponse {
     public static class Snippet {
         private String publishedAt;
         private String title;
-        private String description;
         private Thumbnails thumbnails;
+        private List<String> tags;
     }
 
     @Data
     public static class Thumbnails {
-        @com.fasterxml.jackson.annotation.JsonProperty("default")
-        private Thumbnail defaultThumbnail;
+        @JsonProperty("standard")
+        private Thumbnail standardThumbnail;
+
+        @JsonProperty("high")
+        private Thumbnail highThumbnail;
     }
 
     @Data
