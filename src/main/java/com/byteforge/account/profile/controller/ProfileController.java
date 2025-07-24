@@ -1,13 +1,12 @@
 package com.byteforge.account.profile.controller;
 
+import com.byteforge.account.profile.dto.ProfileRequest;
 import com.byteforge.account.profile.service.ProfileService;
 import com.byteforge.common.response.ResponseMessage;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import com.byteforge.account.profile.dto.ProfileRequest;
 
 @RestController
 @RequestMapping("/profiles")

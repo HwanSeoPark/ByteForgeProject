@@ -1,10 +1,10 @@
 package com.byteforge.account.profile.repository;
 
+import com.byteforge.account.profile.dto.StatisticsResponse;
 import com.byteforge.account.user.domain.QUser;
 import com.byteforge.post.comment.domain.QComment;
 import com.byteforge.post.post.domain.QPost;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.byteforge.account.profile.dto.StatisticsResponse;
 import lombok.RequiredArgsConstructor;
 
 import java.time.LocalDate;

@@ -1,12 +1,12 @@
 package com.byteforge.post.comment.repository;
 
+import com.byteforge.account.user.domain.QUser;
 import com.byteforge.account.user.domain.User;
 import com.byteforge.post.comment.domain.Comment;
 import com.byteforge.post.comment.dto.CommentResponse;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.byteforge.account.user.domain.QUser;
 import lombok.RequiredArgsConstructor;
 
 import java.util.List;

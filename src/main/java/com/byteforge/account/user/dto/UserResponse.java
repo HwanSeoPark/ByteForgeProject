@@ -1,7 +1,7 @@
 package com.byteforge.account.user.dto;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.byteforge.account.user.domain.User;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

@@ -1,22 +1,21 @@
 package com.byteforge.post.post.domain;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
 import com.byteforge.account.user.domain.User;
+import com.byteforge.common.config.BooleanConverter;
+import com.byteforge.post.attachment.domain.Attachment;
 import com.byteforge.post.comment.domain.Comment;
 import com.byteforge.post.post.dto.PostRequest;
 import com.byteforge.post.tag.domain.Tag;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.byteforge.common.config.BooleanConverter;
-import com.byteforge.post.attachment.domain.Attachment;
-import jakarta.persistence.*;
-
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators.IntSequenceGenerator;
+import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 @Entity
 @Builder

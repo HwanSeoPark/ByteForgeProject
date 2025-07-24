@@ -1,12 +1,12 @@
 package com.byteforge.security.config;
 
+import com.byteforge.account.user.constant.UserRole;
+import com.byteforge.admin.visitant.util.SingleVisitInterceptor;
+import com.byteforge.common.exception.FilterExceptionHandler;
 import com.byteforge.oauth.service.CustomOAuth2UserService;
 import com.byteforge.oauth.support.CustomAuthenticationFailureHandler;
 import com.byteforge.oauth.support.OAuth2AuthenticationSuccessHandler;
 import com.byteforge.security.jwt.support.JwtAuthenticationFilter;
-import com.byteforge.account.user.constant.UserRole;
-import com.byteforge.admin.visitant.util.SingleVisitInterceptor;
-import com.byteforge.common.exception.FilterExceptionHandler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -43,7 +43,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests()
                 .requestMatchers(HttpMethod.GET, "/admin/**").hasRole(UserRole.MANAGER.name())
                 .requestMatchers(HttpMethod.GET, "/**").permitAll()
-                .requestMatchers(HttpMethod.POST, "/admin/report/**" , "/admin/login", "/mail/**", "/admin/login", "/logins", "/registers", "/oauth/token", "/user/logout").permitAll()
+                .requestMatchers(HttpMethod.POST, "/admin/report/**" , "/admin/login", "/mail/**", "/logins", "/registers", "/oauth/token", "/user/logout").permitAll()
                 .requestMatchers( "/admin/**").hasRole(UserRole.MANAGER.name())
                 .requestMatchers(HttpMethod.POST, "/**").hasAnyRole(UserRole.USER.name(), UserRole.MANAGER.name())
                 .requestMatchers(HttpMethod.PATCH, "/posts/views/**").permitAll()
@@ -51,7 +51,7 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.PATCH, "/**").permitAll()
                 .requestMatchers(HttpMethod.PUT, "/**").hasAnyRole(UserRole.USER.name(), UserRole.MANAGER.name())
                 .and()
-                // Configures authentication support using an OAuth 2.0 and/or OpenID Connect 1.0 Provider. 
+                // Configures authentication support using an OAuth 2.0 and/or OpenID Connect 1.0 Provider.
                 .oauth2Login().loginPage("/authorization/denied")
                 // loginPage가 리턴하는 OAuth2LoginConfigurer는 다음과 같음.
 // public final class OAuth2LoginConfigurer<B extends HttpSecurityBuilder<B>>
@@ -67,6 +67,7 @@ public class SecurityConfig {
         http.addFilterBefore(singleVisitInterceptor,
                 UsernamePasswordAuthenticationFilter.class
         );
+
 
         http.addFilterBefore(authenticationFilter,
                 UsernamePasswordAuthenticationFilter.class);

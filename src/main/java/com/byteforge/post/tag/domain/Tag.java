@@ -1,7 +1,10 @@
 package com.byteforge.post.tag.domain;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Builder

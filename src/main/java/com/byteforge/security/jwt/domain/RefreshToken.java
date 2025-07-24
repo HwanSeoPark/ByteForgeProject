@@ -14,6 +14,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class RefreshToken {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(nullable = false)
@@ -33,7 +34,7 @@ public class RefreshToken {
                 .build();
     }
 
-    public static RefreshToken creareRefreshToken(Token token) {
+    public static RefreshToken createRefreshToken(Token token) {
         return RefreshToken.builder()
                 .keyEmail(token.getKey())
                 .token(token.getRefreshToken())

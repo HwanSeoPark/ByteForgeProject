@@ -1,14 +1,14 @@
 package com.byteforge.account.user.domain;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators.IntSequenceGenerator;
 import com.byteforge.account.profile.domain.Profile;
 import com.byteforge.account.user.constant.UserRole;
 import com.byteforge.account.user.constant.UserType;
 import com.byteforge.account.user.dto.LoginRequest;
 import com.byteforge.common.config.BooleanConverter;
 import com.byteforge.post.post.domain.Post;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators.IntSequenceGenerator;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
