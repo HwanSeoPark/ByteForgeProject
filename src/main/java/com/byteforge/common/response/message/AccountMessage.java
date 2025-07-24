@@ -12,7 +12,8 @@ public enum AccountMessage {
     EXISTS_EMAIL("이미 존재하는 이메일입니다."),
     NOT_MATCH_PASSWORD("일치하지 않는 비밀번호입니다."),
     IS_DELETE_ACCOUNT("탈퇴한 사용자입니다."),
-    UNUSUAL_APPROACH("비정상적인 접근입니다.");
+    UNUSUAL_APPROACH("비정상적인 접근입니다."),
+    NOT_ADMIN_ACCOUNT("관리자 권한이 없는 계정입니다.");
 
     private final String message;
 

@@ -62,6 +62,7 @@ public class CookieSupport {
                 .httpOnly(true)
                 .secure(true)
                 .path("/")
+                .domain(DOMAIN_URL)
                 .maxAge(0)
                 .build();
 
@@ -69,6 +70,7 @@ public class CookieSupport {
                 .httpOnly(true)
                 .secure(true)
                 .path("/")
+                .domain(DOMAIN_URL)
                 .maxAge(0)
                 .build();
 
