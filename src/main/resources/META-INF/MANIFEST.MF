@@ -1,3 +1,3 @@
 Manifest-Version: 1.0
-Main-Class: com.byteforge.ByteForgeApplication
+Main-Class: com.byteforge.Main
 
