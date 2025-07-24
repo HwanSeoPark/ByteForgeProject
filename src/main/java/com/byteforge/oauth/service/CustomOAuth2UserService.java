@@ -19,8 +19,10 @@ import com.byteforge.account.user.repository.LoginRepository;
 import com.byteforge.oauth.dto.UserSession;
 import com.byteforge.oauth.support.OAuthAttributes;
 
+
 import java.time.LocalDate;
 import java.util.Collections;
+
 
 @Service
 @RequiredArgsConstructor
@@ -33,8 +35,9 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
     @Transactional
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
         OAuthAttributes attributes = createOauthAttributes(userRequest);
+        String kakaoregistrationId = userRequest.getClientRegistration().getRegistrationId();
 
-        User user = saveOrUpdateUser(attributes);
+        User user = saveOrUpdateUser(attributes, kakaoregistrationId);
         isValidAccount(user);
 
         httpSession.setAttribute("user", UserSession.of(user));
@@ -70,13 +73,23 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
         return OAuthAttributes.of(registrationId, userNameAttributeName, oAuth2User.getAttributes());
     }
 
-    public User saveOrUpdateUser(OAuthAttributes attributes) {
-        if(attributes.getEmail() == null) {
-            throw new OAuth2AuthenticationException(new OAuth2Error("null"), "계정의 이메일을 찾을 수 없거나, 이메일 수집 여부에 동의하지 않았습니다.");
-        }
+    public User saveOrUpdateUser(OAuthAttributes attributes, String kakaoregistrationId) {
+        String email = attributes.getEmail();
 
-        return loginRepository.findByEmail(attributes.getEmail())
-                .orElseGet(() -> createAndSaveUser(attributes.getEmail()));
+        if (email == null) {
+            if ("kakao".equals(kakaoregistrationId)) {
+                // 카카오는 이메일이 없어도 임시 이메일 생성
+                email = "kakao_" + attributes.getName() + "@kakao.local";
+            } else {
+                // 구글/네이버는 이메일 필수
+                throw new OAuth2AuthenticationException(new OAuth2Error("null"),
+                        "계정의 이메일을 찾을 수 없거나, 이메일 수집 여부에 동의하지 않았습니다.");
+            }
+        }
+        final String finalEmail = email;
+
+        return loginRepository.findByEmail(finalEmail)
+                .orElseGet(() -> createAndSaveUser(finalEmail));
     }
 
     public User createAndSaveUser(String email) {

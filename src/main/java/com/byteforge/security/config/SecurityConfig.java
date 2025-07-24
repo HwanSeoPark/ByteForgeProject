@@ -1,6 +1,7 @@
 package com.byteforge.security.config;
 
 import com.byteforge.account.user.constant.UserRole;
+import com.byteforge.admin.visitant.util.SingleVisitInterceptor;
 import com.byteforge.common.exception.FilterExceptionHandler;
 import com.byteforge.oauth.service.CustomOAuth2UserService;
 import com.byteforge.oauth.support.CustomAuthenticationFailureHandler;
@@ -24,6 +25,7 @@ public class SecurityConfig {
 
     private final JwtAuthenticationFilter authenticationFilter;
     private final CustomOAuth2UserService oauth2UserService;
+    private final SingleVisitInterceptor singleVisitInterceptor;
     private final OAuth2AuthenticationSuccessHandler oauth2AuthenticationSuccessHandler;
     private final CustomAuthenticationFailureHandler customAuthenticationFailureHandler;
 
@@ -61,6 +63,10 @@ public class SecurityConfig {
 
         http.addFilterBefore(new FilterExceptionHandler(),
                 UsernamePasswordAuthenticationFilter.class);
+
+        http.addFilterBefore(singleVisitInterceptor,
+                UsernamePasswordAuthenticationFilter.class
+        );
 
 
         http.addFilterBefore(authenticationFilter,
