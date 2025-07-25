@@ -48,11 +48,10 @@ public class LoginController {
 		return ResponseEntity.ok().body(ResponseMessage.of(ResponseCode.LOGIN_SUCCESS));
 	}
 
-	@PostMapping(value = "/user/logout")
-	public ResponseEntity logout(HttpServletResponse response) {
+	@PostMapping("/user/logout")
+	public ResponseEntity<ResponseMessage<Object>> logout(HttpServletResponse response) {
 		CookieSupport.deleteJwtTokenInCookie(response);
-
-		return ResponseEntity.ok().build();
+		return ResponseEntity.ok().body(ResponseMessage.of(ResponseCode.LOGOUT_SUCCESS));
 	}
 
 	@DeleteMapping(value = "/users")
@@ -78,5 +77,4 @@ public class LoginController {
 	public ResponseEntity<ResponseMessage> logout() {
 		return ResponseEntity.ok().body(ResponseMessage.of(ResponseCode.LOGOUT_SUCCESS));
 	}
-
 }

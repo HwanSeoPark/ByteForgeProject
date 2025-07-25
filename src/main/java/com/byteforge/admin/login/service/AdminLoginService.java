@@ -24,7 +24,7 @@ public class AdminLoginService {
         User result = loginService.login(loginRequest, response);
 
         if(result.getRole() != UserRole.MANAGER) {
-            throw new LoginException(AccountMessage.NOT_FOUNT_ACCOUNT);
+            throw new LoginException(AccountMessage.NOT_ADMIN_ACCOUNT);
         }
 
         return AdminLoginResponse.createResponse(result);
