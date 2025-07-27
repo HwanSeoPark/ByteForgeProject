@@ -37,22 +37,20 @@ public class CookieSupport {
 
 
     public static void setCookieFromJwt(Token token, HttpServletResponse response) {
-        ResponseCookie accessCookie = createAccessToken(token.getAccessToken());
-        ResponseCookie refreshCookie = createRefreshToken(token.getRefreshToken());
 
-        response.addHeader("Set-Cookie", accessCookie.toString());
-        response.addHeader("Set-Cookie", refreshCookie.toString());
+        response.addHeader("Set-Cookie" , createAccessToken(token.getAccessToken()).toString());
+        response.addHeader("Set-Cookie" , createRefreshToken(token.getRefreshToken()).toString());
 
         ResponseCookie deleteSessionCookie = ResponseCookie.from("JSESSIONID", "")
                 .path("/")
                 .httpOnly(true)
-                .secure(false)
-                .sameSite("Lax")
-                .maxAge(0) // 0으로 설정해 바로 삭제
+                .secure(false)  // true : https, false : http
+                // SameSite 속성은 브라우저가 요청에 쿠키를 포함할지 말지를 판단할 때, 요청의 출처(origin)를 기준으로 결정
+                .sameSite("Lax") // Lax : same-site 요청 + 일부 cross-site 요청에도 쿠키를 보냄
+                .maxAge(0)
                 .build();
 
         response.addHeader("Set-Cookie", deleteSessionCookie.toString());
-
     }
 
 

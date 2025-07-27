@@ -2,10 +2,14 @@ package com.byteforge.oauth.service;
 
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.*;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
+import org.springframework.security.oauth2.core.OAuth2AccessToken;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.OAuth2Error;
 import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
@@ -18,10 +22,17 @@ import com.byteforge.account.user.domain.User;
 import com.byteforge.account.user.repository.LoginRepository;
 import com.byteforge.oauth.dto.UserSession;
 import com.byteforge.oauth.support.OAuthAttributes;
+import org.springframework.util.Assert;
+import org.springframework.util.StringUtils;
+import org.springframework.web.client.RestClientException;
+import org.springframework.web.client.RestOperations;
+import org.springframework.web.client.RestTemplate;
 
 
+import java.net.URI;
 import java.time.LocalDate;
 import java.util.Collections;
+import java.util.Map;
 
 
 @Service
@@ -31,19 +42,73 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
     private final LoginRepository loginRepository;
     private final HttpSession httpSession;
 
+    private final RestOperations restOperations = new RestTemplate();
+
+    private static final ParameterizedTypeReference<Map<String, Object>> PARAMETERIZED_RESPONSE_TYPE =
+            new ParameterizedTypeReference<>() {};
+
     @Override
     @Transactional
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
-        OAuthAttributes attributes = createOauthAttributes(userRequest);
-        String kakaoregistrationId = userRequest.getClientRegistration().getRegistrationId();
 
-        User user = saveOrUpdateUser(attributes, kakaoregistrationId);
+        Assert.notNull(userRequest, "OAuth2UserRequest cannot be null");
+
+//        String kakaoregistrationId = userRequest.getClientRegistration().getRegistrationId();
+
+        ClientRegistration clientRegistration = userRequest.getClientRegistration();
+        String userInfoUri = clientRegistration
+                .getProviderDetails()
+                .getUserInfoEndpoint()
+                .getUri();
+
+        String registrationId = clientRegistration.getRegistrationId();
+
+        if (!StringUtils.hasText(userInfoUri)) {
+            throw new OAuth2AuthenticationException("Missing required UserInfo Uri");
+        }
+
+        // Access Token
+        OAuth2AccessToken accessToken = userRequest.getAccessToken();
+
+        // Create headers
+        HttpHeaders headers = new HttpHeaders();
+        headers.setBearerAuth(accessToken.getTokenValue());
+        headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+
+        // Make HTTP Request
+        RequestEntity<?> request = new RequestEntity<>(headers, HttpMethod.GET, URI.create(userInfoUri));
+
+        ResponseEntity<Map<String, Object>> response;
+        try {
+            response = this.restOperations.exchange(request, PARAMETERIZED_RESPONSE_TYPE);
+        } catch (RestClientException ex) {
+            OAuth2Error error = new OAuth2Error("user_info_request_error",
+                    "UserInfo endpoint request error: ",
+                    userInfoUri);
+            throw new OAuth2AuthenticationException(error, ex);
+        }
+
+        Map<String, Object> userAttributes = response.getBody();
+        if (userAttributes == null || userAttributes.isEmpty()) {
+            throw new OAuth2AuthenticationException(
+                    new OAuth2Error("empty_user_info"),
+                    "UserInfo response is empty for registrationId: " + registrationId);
+        }
+
+        // 사용자 이름 추출 키
+        String userNameAttributeName = clientRegistration.getProviderDetails()
+                .getUserInfoEndpoint()
+                .getUserNameAttributeName();
+
+        OAuthAttributes attributes = OAuthAttributes.of(registrationId, userNameAttributeName, userAttributes);
+
+        User user = saveOrUpdateUser(attributes);
         isValidAccount(user);
 
-        httpSession.setAttribute("user", UserSession.of(user));
-
-        return new DefaultOAuth2User(Collections.singleton(new SimpleGrantedAuthority("ROLE_USER")),
-                attributes.getAttributes(), attributes.getNameAttributeKey());
+        return new DefaultOAuth2User(
+                Collections.singleton(new SimpleGrantedAuthority("ROLE_USER")),
+                attributes.getAttributes(),
+                attributes.getNameAttributeKey());
     }
 
     public void isValidAccount(User user) {
@@ -73,23 +138,13 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
         return OAuthAttributes.of(registrationId, userNameAttributeName, oAuth2User.getAttributes());
     }
 
-    public User saveOrUpdateUser(OAuthAttributes attributes, String kakaoregistrationId) {
-        String email = attributes.getEmail();
-
-        if (email == null) {
-            if ("kakao".equals(kakaoregistrationId)) {
-                // 카카오는 이메일이 없어도 임시 이메일 생성
-                email = "kakao_" + attributes.getName() + "@kakao.local";
-            } else {
-                // 구글/네이버는 이메일 필수
-                throw new OAuth2AuthenticationException(new OAuth2Error("null"),
-                        "계정의 이메일을 찾을 수 없거나, 이메일 수집 여부에 동의하지 않았습니다.");
-            }
+    public User saveOrUpdateUser(OAuthAttributes attributes) {
+        if(attributes.getEmail() == null) {
+            throw new OAuth2AuthenticationException(new OAuth2Error("null"), "계정의 이메일을 찾을 수 없거나, 이메일 수집 여부에 동의하지 않았습니다.");
         }
-        final String finalEmail = email;
 
-        return loginRepository.findByEmail(finalEmail)
-                .orElseGet(() -> createAndSaveUser(finalEmail));
+        return loginRepository.findByEmail(attributes.getEmail())
+                .orElseGet(() -> createAndSaveUser(attributes.getEmail()));
     }
 
     public User createAndSaveUser(String email) {
