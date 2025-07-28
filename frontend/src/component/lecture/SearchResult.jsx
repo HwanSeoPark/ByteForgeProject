@@ -18,8 +18,7 @@ function SearchResult() {
     setLoading(true);
     setError(null);
 
-    fetch(`/api/search?query=${encodeURIComponent(query)}`) // 실제 테스트
-    // fetch('/mock/searchResult.json')  // mock으로 테스트할 때
+    fetch(`/api/search?query=${encodeURIComponent(query)}`)
       .then(res => {
         if (!res.ok) throw new Error('API 호출 실패');
         return res.json();
@@ -33,7 +32,6 @@ function SearchResult() {
     navigate(`/video?v=${encodeURIComponent(videoId)}`);
   };
 
-//   if (!query) return <></>;
   return (
     <>
         {query ? (
