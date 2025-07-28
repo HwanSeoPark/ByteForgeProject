@@ -9,6 +9,11 @@
     margin-top: 5%;
 }
 
+.DefaultArea {
+    width: 1200px;
+    display: flex;
+}
+
 .searchResultArea{
     width: 1200px;
     display: flex;
