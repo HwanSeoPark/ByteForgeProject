@@ -3,7 +3,6 @@ package com.byteforge.oauth.support;
 import com.byteforge.account.user.constant.UserRole;
 import com.byteforge.account.user.domain.User;
 import com.byteforge.account.user.repository.LoginRepository;
-import com.byteforge.oauth.dto.UserSession;
 import com.byteforge.security.jwt.dto.Token;
 import com.byteforge.security.jwt.support.JwtTokenProvider;
 import jakarta.servlet.http.HttpServletRequest;
@@ -27,41 +26,6 @@ import java.util.Optional;
 
 import static com.byteforge.security.jwt.support.CookieSupport.*;
 
-//@Component
-//@EqualsAndHashCode(callSuper = false)
-//@RequiredArgsConstructor
-//public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
-//    private final JwtTokenProvider jwtTokenProvider;
-//    private final HttpSession httpSession;
-//
-//    @Value("${client.url}")
-//    private String clientUrl;
-//
-//    @Override
-//    public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
-//                                        Authentication authentication) throws IOException {
-//        UserSession user = (UserSession) httpSession.getAttribute("user");
-//
-//        if (user == null) {
-//            getRedirectStrategy().sendRedirect(request, response, createRedirectUrl(clientUrl + "/oauth2/disallowance"));
-//
-//            return;
-//        }
-//
-//        Token token = jwtTokenProvider.createJwtToken(user.getId(), UserRole.USER);
-//        setCookieFromJwt(token , response);
-//
-//        httpSession.removeAttribute("user");
-//
-//        getRedirectStrategy().sendRedirect(request, response, createRedirectUrl(clientUrl));
-//    }
-//
-//    public String createRedirectUrl(String url) {
-//        return UriComponentsBuilder.fromUriString(url).build().toUriString();
-//    }
-//}
-
-// 테스트 코드
 @Component
 @EqualsAndHashCode(callSuper = false)
 @RequiredArgsConstructor
@@ -85,7 +49,6 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 
             OAuth2User oAuth2User = (OAuth2User) authentication.getPrincipal();
 
-            // 예시: provider에 따라 로직 분기
             if ("naver".equals(registrationId)) {
                 LinkedHashMap<String, String> responseAttr = (LinkedHashMap<String, String>) oAuth2User.getAttributes().get("response");
                 email = responseAttr.get("email");

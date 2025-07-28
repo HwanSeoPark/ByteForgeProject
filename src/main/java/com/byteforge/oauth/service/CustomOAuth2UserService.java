@@ -53,8 +53,6 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
 
         Assert.notNull(userRequest, "OAuth2UserRequest cannot be null");
 
-//        String kakaoregistrationId = userRequest.getClientRegistration().getRegistrationId();
-
         ClientRegistration clientRegistration = userRequest.getClientRegistration();
         String userInfoUri = clientRegistration
                 .getProviderDetails()

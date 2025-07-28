@@ -24,18 +24,18 @@ public class AttachmentService {
     private final AttachmentRepository attachmentRepository;
     private final S3Service s3Service;
 
-    @Transactional
-    public void fileUpload(List<MultipartFile> multipartFiles , Post post) throws IOException {
-        if(multipartFiles != null) {
-            for (MultipartFile multipartFile : multipartFiles) {
-                String uuid = createUUIDString();
-                String s3Url = s3Service.uploadFileToS3(multipartFile , uuid);
-
-                Attachment attachment = Attachment.createAttachment(uuid, s3Url, multipartFile);
-                post.addFreeAttach(attachment);
-            }
-        }
-    }
+//    @Transactional
+//    public void fileUpload(List<MultipartFile> multipartFiles , Post post) throws IOException {
+//        if(multipartFiles != null) {
+//            for (MultipartFile multipartFile : multipartFiles) {
+//                String uuid = createUUIDString();
+//                String s3Url = s3Service.uploadFileToS3(multipartFile , uuid);
+//
+//                Attachment attachment = Attachment.createAttachment(uuid, s3Url, multipartFile);
+//                post.addFreeAttach(attachment);
+//            }
+//        }
+//    }
 
     public String createUUIDString() {
         return UUID.randomUUID().toString().replaceAll("-", "");

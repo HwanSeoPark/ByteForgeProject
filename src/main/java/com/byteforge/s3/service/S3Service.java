@@ -18,102 +18,119 @@ import java.util.UUID;
 import static com.byteforge.common.response.message.S3Message.INVALID_FILE;
 import static com.byteforge.common.response.message.S3Message.INVALID_IMAGE;
 
-@Service
-@RequiredArgsConstructor
-public class S3Service {
-    private final AmazonS3Client amazonS3Client;
-
-    private final AttachmentRepository attachmentRepository;
-
-    @Value("${cloud.aws.s3.bucket}")
-    private String bucket;
-
-    public String uploadFileToS3(MultipartFile file , String uuid) throws IOException {
-        if(isValidFile(file)) {
-            throw new S3Exception(INVALID_FILE);
-        }
-
-        ObjectMetadata metadata = new ObjectMetadata();
-        metadata.setContentType(file.getContentType());
-        metadata.setContentLength(file.getInputStream().available());
-        amazonS3Client.putObject(bucket , uuid ,file.getInputStream() , metadata);
-
-        return amazonS3Client.getUrl(bucket , uuid).toString();
-    }
-
-    public String uploadImageToS3(MultipartFile file) throws IOException {
-        String uuid = UUID.randomUUID().toString();
-
-        if(!isValidImage(file)) {
-            throw new S3Exception(INVALID_IMAGE);
-        }
-
-        ObjectMetadata metadata = new ObjectMetadata();
-        metadata.setContentType(file.getContentType());
-        metadata.setContentLength(file.getInputStream().available());
-        amazonS3Client.putObject(bucket , uuid ,file.getInputStream() , metadata);
-
-        return amazonS3Client.getUrl(bucket , uuid).toString();
-    }
-
+//@Service
+//@RequiredArgsConstructor
+//public class S3Service {
+//    private final AmazonS3Client amazonS3Client;
+//
+//    private final AttachmentRepository attachmentRepository;
+//
+//    @Value("${cloud.aws.s3.bucket}")
+//    private String bucket;
+//
+//    public String uploadFileToS3(MultipartFile file , String uuid) throws IOException {
+//        if(isValidFile(file)) {
+//            throw new S3Exception(INVALID_FILE);
+//        }
+//
+//        ObjectMetadata metadata = new ObjectMetadata();
+//        metadata.setContentType(file.getContentType());
+//        metadata.setContentLength(file.getInputStream().available());
+//        amazonS3Client.putObject(bucket , uuid ,file.getInputStream() , metadata);
+//
+//        return amazonS3Client.getUrl(bucket , uuid).toString();
+//    }
+//
 //    public String uploadImageToS3(MultipartFile file) throws IOException {
 //        String uuid = UUID.randomUUID().toString();
 //
-//        if (!isValidImage(file)) {
+//        if(!isValidImage(file)) {
 //            throw new S3Exception(INVALID_IMAGE);
 //        }
 //
 //        ObjectMetadata metadata = new ObjectMetadata();
 //        metadata.setContentType(file.getContentType());
 //        metadata.setContentLength(file.getInputStream().available());
+//        amazonS3Client.putObject(bucket , uuid ,file.getInputStream() , metadata);
 //
-//        // PutObjectRequest를 사용하여 public-read 권한 추가
-//        PutObjectRequest putObjectRequest = new PutObjectRequest(bucket, uuid, file.getInputStream(), metadata)
-//                .withCannedAcl(CannedAccessControlList.PublicRead);
-//
-//        amazonS3Client.putObject(putObjectRequest);
-//
-//        return amazonS3Client.getUrl(bucket, uuid).toString();
+//        return amazonS3Client.getUrl(bucket , uuid).toString();
 //    }
+//
+////    public String uploadImageToS3(MultipartFile file) throws IOException {
+////        String uuid = UUID.randomUUID().toString();
+////
+////        if (!isValidImage(file)) {
+////            throw new S3Exception(INVALID_IMAGE);
+////        }
+////
+////        ObjectMetadata metadata = new ObjectMetadata();
+////        metadata.setContentType(file.getContentType());
+////        metadata.setContentLength(file.getInputStream().available());
+////
+////        // PutObjectRequest를 사용하여 public-read 권한 추가
+////        PutObjectRequest putObjectRequest = new PutObjectRequest(bucket, uuid, file.getInputStream(), metadata)
+////                .withCannedAcl(CannedAccessControlList.PublicRead);
+////
+////        amazonS3Client.putObject(putObjectRequest);
+////
+////        return amazonS3Client.getUrl(bucket, uuid).toString();
+////    }
+//
+//
+//    public boolean isValidFile(MultipartFile file) {
+//        String fileName = file.getOriginalFilename();
+//        String extension = fileName.substring(fileName.lastIndexOf(".") + 1);
+//
+//        if(!extension.equals("exe") || !extension.equals("bat")) {
+//            return false;
+//        }
+//
+//        return true;
+//    }
+//
+//    public boolean isValidImage(MultipartFile file) {
+//        String fileName = file.getOriginalFilename();
+//        String extension = fileName.substring(fileName.lastIndexOf(".") + 1);
+//
+//        if(extension.equals("jpg") || extension.equals("png")) {
+//            return true;
+//        }
+//
+//        return false;
+//    }
+//
+//    public void deleteFile(String fileName) {
+//        boolean isObjectExist = amazonS3Client.doesObjectExist(bucket, fileName);
+//
+//        if(isObjectExist) {
+//            amazonS3Client.deleteObject(bucket, fileName);
+//        }
+//    }
+//
+//    @Transactional
+//    public void deleteFileByPostId(long postId) {
+//        List<AttachmentResponse> attachmentResponses = attachmentRepository.findAttachmentsByPostId(postId);
+//
+//        for(AttachmentResponse attachmentResponse : attachmentResponses) {
+//            deleteFile(attachmentResponse.getUuidFileName());
+//        }
+//    }
+//
+//}
 
-
-    public boolean isValidFile(MultipartFile file) {
-        String fileName = file.getOriginalFilename();
-        String extension = fileName.substring(fileName.lastIndexOf(".") + 1);
-
-        if(!extension.equals("exe") || !extension.equals("bat")) {
-            return false;
-        }
-
-        return true;
-    }
-
-    public boolean isValidImage(MultipartFile file) {
-        String fileName = file.getOriginalFilename();
-        String extension = fileName.substring(fileName.lastIndexOf(".") + 1);
-
-        if(extension.equals("jpg") || extension.equals("png")) {
-            return true;
-        }
-
-        return false;
+    // S3 없이 코드 사용
+@Service
+public class S3Service {
+    public String uploadImageToS3(MultipartFile file) {
+        // 💡 S3 대신 기본 이미지 URL 리턴
+        return "/static/images/default-profile.png";
     }
 
     public void deleteFile(String fileName) {
-        boolean isObjectExist = amazonS3Client.doesObjectExist(bucket, fileName);
-
-        if(isObjectExist) {
-            amazonS3Client.deleteObject(bucket, fileName);
-        }
+        // 삭제 생략
     }
 
-    @Transactional
     public void deleteFileByPostId(long postId) {
-        List<AttachmentResponse> attachmentResponses = attachmentRepository.findAttachmentsByPostId(postId);
-
-        for(AttachmentResponse attachmentResponse : attachmentResponses) {
-            deleteFile(attachmentResponse.getUuidFileName());
-        }
+        // 삭제 생략
     }
-
 }

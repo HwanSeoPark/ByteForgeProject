@@ -14,7 +14,7 @@ public class CookieSupport {
 
     // accessToken을 담는 ResponseCookie 생성
     public static ResponseCookie createAccessToken(String access) {
-        return ResponseCookie.from("accessToken" , access)
+        return ResponseCookie.from("accessToken", access)
                 .path("/")
                 .maxAge(30 * 60 * 1000)
                 .secure(true)
@@ -23,9 +23,10 @@ public class CookieSupport {
                 .sameSite("none")
                 .build();
     }
+
     // refreshToken을 담는 ResponseCookie 생성
     public static ResponseCookie createRefreshToken(String refresh) {
-        return ResponseCookie.from("refreshToken" , refresh)
+        return ResponseCookie.from("refreshToken", refresh)
                 .path("/")
                 .maxAge(14 * 24 * 60 * 60 * 1000)
                 .secure(true)
@@ -38,8 +39,8 @@ public class CookieSupport {
 
     public static void setCookieFromJwt(Token token, HttpServletResponse response) {
 
-        response.addHeader("Set-Cookie" , createAccessToken(token.getAccessToken()).toString());
-        response.addHeader("Set-Cookie" , createRefreshToken(token.getRefreshToken()).toString());
+        response.addHeader("Set-Cookie", createAccessToken(token.getAccessToken()).toString());
+        response.addHeader("Set-Cookie", createRefreshToken(token.getRefreshToken()).toString());
 
         ResponseCookie deleteSessionCookie = ResponseCookie.from("JSESSIONID", "")
                 .path("/")

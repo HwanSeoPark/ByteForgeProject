@@ -40,7 +40,7 @@ public class PostService {
 		Post post = createNewPost(postRequest);
 
 		user.addPost(post);
-		attachmentService.fileUpload(multipartFiles , post);
+//		attachmentService.fileUpload(multipartFiles , post);
 
 		return ResponseMessage.of(ResponseCode.REQUEST_SUCCESS);
 	}
@@ -111,7 +111,7 @@ public class PostService {
 	}
 
 	public void uploadAttachments(List<MultipartFile> multipartFiles, Post post) throws IOException {
-		attachmentService.fileUpload(multipartFiles, post);
+//		attachmentService.fileUpload(multipartFiles, post);
 	}
 
 	public ResponseMessage<List<PostListResponse>> getAllPost(Pageable pageable) {

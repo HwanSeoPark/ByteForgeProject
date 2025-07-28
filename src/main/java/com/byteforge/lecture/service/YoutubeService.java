@@ -30,7 +30,7 @@ public class YoutubeService {
                 .queryParam("fields", "items(id/videoId)")
                 .queryParam("q", keyword)
                 .queryParam("type", "video")
-                .queryParam("maxResults", 3)
+                .queryParam("maxResults", 20)
                 .queryParam("key", apiKey)
                 .build()
                 .encode()
